@@ -630,7 +630,12 @@ def translate(lines: List[str]) -> ObjectCode:
 
 
 def main():
-    """Assemble one file into object code in json format"""
+    """Assemble one file into object code in json format
+    
+    python assemble.py [input] [output]
+
+    NOTE: change asm.conf back to OBJ when done
+    """
     args = cli()
     source = [line for line in args.source]
     objcode = translate(source)

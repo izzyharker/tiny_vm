@@ -48,6 +48,12 @@ void assert_is_type(obj_ref thing, class_ref expected) {
     assert(0);
 }
 
+/* Check if an integer value is 0 */
+void assert_nonzero(obj_Int thing) {
+    if (thing->value != 0) return;
+    assert(0);
+}
+
 /* Trampolines and shims:
  * We must make it possible for the interpreter to call native methods,
  * and for native methods to call both native and interpreted methods,
@@ -632,6 +638,74 @@ vm_Word method_Int_plus[] = {
         {.intval = 1}
 };
 
+// TODO - test new functions
+/* Int:subtract (new native_method) */
+obj_ref native_Int_minus(void ) {
+    obj_ref this = vm_fp->obj;
+    assert_is_type(this, the_class_Int);
+    obj_Int this_int = (obj_Int) this;
+    obj_ref other = (vm_fp - 1)->obj;
+    assert_is_type(other, the_class_Int);
+    obj_Int other_int = (obj_Int) other;
+    log_debug("Subtracting integer values: %d - %d",
+           this_int->value, other_int->value);
+    obj_ref sum = new_int(this_int->value - other_int->value);
+    return sum;
+}
+
+vm_Word method_Int_minus[] = {
+        {.instr = vm_op_enter},
+        {.instr = vm_op_call_native},
+        {.native = native_Int_minus},
+        {.instr = vm_op_return},
+        {.intval = 1}
+};
+
+/* Int:multiply (new native_method) */
+obj_ref native_Int_multiply(void ) {
+    obj_ref this = vm_fp->obj;
+    assert_is_type(this, the_class_Int);
+    obj_Int this_int = (obj_Int) this;
+    obj_ref other = (vm_fp - 1)->obj;
+    assert_is_type(other, the_class_Int);
+    obj_Int other_int = (obj_Int) other;
+    log_debug("Multiplying integer values: %d * %d",
+           this_int->value, other_int->value);
+    obj_ref sum = new_int(this_int->value * other_int->value);
+    return sum;
+}
+
+vm_Word method_Int_multiply[] = {
+        {.instr = vm_op_enter},
+        {.instr = vm_op_call_native},
+        {.native = native_Int_multiply},
+        {.instr = vm_op_return},
+        {.intval = 1}
+};
+
+/* Int:divide (new native_method) */
+obj_ref native_Int_divide(void ) {
+    obj_ref this = vm_fp->obj;
+    assert_is_type(this, the_class_Int);
+    obj_Int this_int = (obj_Int) this;
+    obj_ref other = (vm_fp - 1)->obj;
+    assert_is_type(other, the_class_Int);
+    obj_Int other_int = (obj_Int) other;
+    assert_nonzero(other);
+    log_debug("Dividing integer values: %d / %d",
+           this_int->value, other_int->value);
+    obj_ref sum = new_int(this_int->value / other_int->value);
+    return sum;
+}
+
+vm_Word method_Int_divide[] = {
+        {.instr = vm_op_enter},
+        {.instr = vm_op_call_native},
+        {.native = native_Int_divide},
+        {.instr = vm_op_return},
+        {.intval = 1}
+};
+
 /* The Int Class (a singleton) */
 struct  class_struct  the_class_Int_struct = {
         .header = {
@@ -647,7 +721,10 @@ struct  class_struct  the_class_Int_struct = {
                 method_Obj_print, // PRINT
                 method_Int_equals,  // EQUALS
                 method_Int_less, // LESS
-                method_Int_plus
+                method_Int_plus,
+                method_Int_minus,
+                method_Int_multiply,
+                method_Int_divide
         }
  };
 

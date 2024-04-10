@@ -8,6 +8,11 @@
 
 #define PATHBUFSIZE 1000
 int main(int argc, char *argv[]) {
+    /*
+    calling (from .): 
+    ./bin/tiny_vm -Ltests/OBJ [filename w/out ".json"]
+    ^^^ won't need -L eventually but my default OBJ directory is a bit down rn
+    */
     set_log_level(INFO);
     log_info("This is the tiny VM\n");
     int opt;
