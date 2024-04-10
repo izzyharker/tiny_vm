@@ -32,7 +32,8 @@ tests/OBJ/*.json
 
 # generated .asm files in top directory
 # keep the ones in tests/
-./*.asm
+*.asm
+!tests/src/*.asm
 
 # Other generated files
 vm_code_table.c
