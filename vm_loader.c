@@ -97,6 +97,7 @@ void vm_loader_set_main(char *main_class_name) {
  */
 class_ref find_loaded(char *name) {
     for (int i=0; i < n_classes_loaded; ++i) {
+        log_debug("%s\n", loaded_classes[i]->header.class_name);
         if (strcmp(loaded_classes[i]->header.class_name, name) == 0) {
             return loaded_classes[i];
         }
