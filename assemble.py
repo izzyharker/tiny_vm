@@ -632,9 +632,9 @@ def translate(lines: List[str]) -> ObjectCode:
 def main():
     """Assemble one file into object code in json format
     
-    python assemble.py [input] [output]
+    python assemble.py [input] ./OBJ/[output]
 
-    NOTE: change asm.conf back to OBJ when done
+    NOTE: class name has to match file name for tiny_vm to run
     """
     args = cli()
     source = [line for line in args.source]
