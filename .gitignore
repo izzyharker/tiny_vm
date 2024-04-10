@@ -30,6 +30,9 @@ tests/OBJ/*.json
 # No need to keep built-in classes here;
 # we copy them in from the OBJ directory above
 
+# generated .asm files in top directory
+# keep the ones in tests/
+./*.asm
 
 # Other generated files
 vm_code_table.c
