@@ -60,7 +60,7 @@ Running program...
 *INFO* : Ran
 ```
 
-Note: Division by 0 will cause an error! If this is encountered, the program will abort and any subsequent expressions will not be evaluated, though those above the division issue will still run. 
+Note: Division by 0 will cause an error! If this is encountered, the program will abort and any subsequent expressions will not be evaluated, though those above the problematic expression will still run. This is (to my best knowledge) the only thing that will make the program crash, and is completely intentional :smile:
 
 ## Building with CMake
 
