@@ -9,7 +9,8 @@
                 "plus",
                 "minus",
                 "multiply",
-                "divide"
+                "divide",
+                "negate"
   ],
   "fields": []
 }

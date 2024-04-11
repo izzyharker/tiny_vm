@@ -31,6 +31,7 @@ void assert_is_type(obj_ref thing, class_ref expected) {
     assert(expected->header.healthy_class_tag == HEALTHY);
     class_ref thing_class = thing->header.clazz;
     class_ref clazz = thing_class;
+    // fprintf(stderr, "thing classname: %s\n", thing_class->header.class_name);
     while (clazz) {
         if (clazz == expected) {
             return; // OK
@@ -50,7 +51,9 @@ void assert_is_type(obj_ref thing, class_ref expected) {
 
 /* Check if an integer value is 0 */
 void assert_nonzero(obj_Int thing) {
+    // fprintf(stderr, "Checking int value: %d\n", thing->value);
     if (thing->value != 0) return;
+    fprintf(stderr, "Value Error: Denominator is 0. Exiting...\n");
     assert(0);
 }
 
@@ -648,7 +651,7 @@ obj_ref native_Int_minus(void ) {
     assert_is_type(other, the_class_Int);
     obj_Int other_int = (obj_Int) other;
     log_debug("Subtracting integer values: %d - %d",
-           this_int->value, other_int->value);
+           other_int->value, this_int->value);
     obj_ref sum = new_int(other_int->value - this_int->value);
     return sum;
 }
@@ -690,8 +693,8 @@ obj_ref native_Int_divide(void ) {
     obj_Int this_int = (obj_Int) this;
     obj_ref other = (vm_fp - 1)->obj;
     assert_is_type(other, the_class_Int);
+    assert_nonzero(this_int);
     obj_Int other_int = (obj_Int) other;
-    assert_nonzero(other);
     log_debug("Dividing integer values: %d / %d",
            this_int->value, other_int->value);
     obj_ref sum = new_int(other_int->value / this_int->value);
@@ -704,6 +707,25 @@ vm_Word method_Int_divide[] = {
         {.native = native_Int_divide},
         {.instr = vm_op_return},
         {.intval = 1}
+};
+
+/* Int:negate (new native_method) */
+obj_ref native_Int_negate(void ) {
+    obj_ref this = vm_fp->obj;
+    assert_is_type(this, the_class_Int);
+    obj_Int this_int = (obj_Int) this;
+    log_debug("Negating integer value: %d",
+           this_int->value);
+    obj_ref negated = new_int(0 - this_int->value);
+    return (obj_ref) negated;
+}
+
+vm_Word method_Int_negate[] = {
+        {.instr = vm_op_enter},
+        {.instr = vm_op_call_native},
+        {.native = native_Int_negate},
+        {.instr = vm_op_return},
+        {.intval = 0} // for some reason this fixed my problems...
 };
 
 /* The Int Class (a singleton) */
@@ -724,7 +746,8 @@ struct  class_struct  the_class_Int_struct = {
                 method_Int_plus,
                 method_Int_minus,
                 method_Int_multiply,
-                method_Int_divide
+                method_Int_divide,
+                method_Int_negate
         }
  };
 

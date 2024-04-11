@@ -66,13 +66,13 @@ class EmitCode(Transformer):
         f.close()
 
     def mul(self, left, right):
-        log.debug('sum "*" product -> mul')
+        log.debug('product "*" atom -> mul')
         with open(self.out_file, "a") as f:
             print("\tcall Int:multiply", file=f)
         f.close()
 
     def div(self, left, right):
-        log.debug('sum "/" product -> div')
+        log.debug('product "/" atom -> div')
         with open(self.out_file, "a") as f:
             print("\tcall Int:divide", file=f)
         f.close()
@@ -86,8 +86,7 @@ class EmitCode(Transformer):
     def neg(self, v):
         log.debug('"-"atom -> neg')
         with open(self.out_file, "a") as f:
-            print("\tconst 0", file=f)
-            print("\tcall Int:minus", file=f)
+            print("\tcall Int:negate", file=f)
         f.close()
 
 calc_parser = Lark(calc_grammar, parser='lalr', transformer=EmitCode())
@@ -113,8 +112,7 @@ def main():
 
     # logging
     print("Starting code generation...")
-    print("Enter any number of arithmetic expressions...")
-    print("Type 'q' to break.")
+    print("Enter any number of arithmetic expressions, then 'q' to evaluate.")
 
     # loop to collect expressions
     while True:
@@ -130,6 +128,7 @@ def main():
         try:
             calc(s)
         except:
+            log.info("Error: invalid expression. Exiting input (previous expressions will be evaluated)...")
             break
 
         # after each expression, print the result and a newline
