@@ -8,6 +8,60 @@ offering of CIS 461/561 compiler construction course at University of Oregon.
 
 Continuing development and revisions for Spring 2024 offering. 
 
+## Running
+
+### Installation
+Build with CMake following the instructions below. 
+
+There is no given a Python `venv` for this project, but Lark must be installed with `pip` before `calc.py` can be run to use the entire calculator. However, assemble.py does not require any additional dependencies so that functionality will be available regardless. 
+
+### Execution
+There is an sh script (`run`) which executes the three necessary commands in the correct order and handles file naming and placement. This is the easy way to run the calculator, however it is not necessary.
+
+To run the program using the sh script, enter the following. This may be `bash` instead of `sh` depending on your shell:
+```
+sh ./run
+```
+
+Alternatively, the sequence of commands is:
+```
+python calc.py
+python assemble.py Calculator.asm ./OBJ/Calculator.json
+./bin/tiny_vm Calculator
+```
+
+Upon starting the `calc.py` program, you will be prompted to enter a series of arithmetic expressions. Entering 'q' (or an invalid expression such as pressing 'return' on a blank line) will exit `calc.py` and move to assembly and execution. Any number of expressions can be evaluated, and the solutions will be printed in order of entry, one answer per line, when the virtual machine is executed. 
+
+Sample output:
+```
+tiny_vm git:(main) ✗ sh ./run
+Running calc.py...
+Starting code generation...
+Enter any number of arithmetic expressions, then 'q' to evaluate.
+> 1 + 1
+> -5 + 8
+> 2 * 5
+> (5 - 1) * (7 + -4)
+> q
+Generating object code...
+done
+Running program...
+*INFO* : This is the tiny VM
+
+*INFO* : Loading ./OBJ/Calculator.json
+*INFO* : Class Calculator extends Obj
+*INFO* : Class Calculator has 4 methods and 0 fields
+*INFO* : Executing Calculator
+
+2
+3
+10
+12
+*INFO* : Ran
+```
+
+Note: Division by 0 will cause an error! If this is encountered, the program will abort and any subsequent expressions will not be evaluated, though those above the division issue will still run. 
+
 ## Building with CMake
 
 These instructions should work in Linux and have been tested with
