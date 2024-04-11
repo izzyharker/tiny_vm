@@ -53,7 +53,7 @@ void assert_is_type(obj_ref thing, class_ref expected) {
 void assert_nonzero(obj_Int thing) {
     // fprintf(stderr, "Checking int value: %d\n", thing->value);
     if (thing->value != 0) return;
-    fprintf(stderr, "Value Error: Denominator is 0. Exiting...\n");
+    fprintf(stderr, "DivisionByZeroError! Exiting...\n");
     assert(0);
 }
 
